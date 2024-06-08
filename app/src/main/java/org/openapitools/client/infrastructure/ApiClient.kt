@@ -80,7 +80,16 @@ class ApiClient(
     }
 
     fun <S> createService(serviceClass: Class<S>): S {
-        val usedCallFactory = this.callFactory ?: clientBuilder.build()
+        val usedCallFactory = this.callFactory ?: clientBuilder
+            .addInterceptor { chain ->
+                val original = chain.request()
+                val requestBuilder = original.newBuilder()
+                    .header("ngrok-skip-browser-warning", "1") // Add the custom header here
+                    .method(original.method, original.body)
+                val request = requestBuilder.build()
+                chain.proceed(request)
+            }
+            .build()
         return retrofitBuilder.callFactory(usedCallFactory).build().create(serviceClass)
     }
 
@@ -105,7 +114,7 @@ class ApiClient(
 
         @JvmStatic
         val defaultBasePath: String by lazy {
-            System.getProperties().getProperty(baseUrlKey, "http://localhost:2137")
+            System.getProperties().getProperty(baseUrlKey, "https://resolved-heron-pleasing.ngrok-free.app")
         }
     }
 }

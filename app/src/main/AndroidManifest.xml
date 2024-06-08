@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,17 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Brew"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".MainLayout"
-            android:exported="false"
-            android:label="@string/title_activity_main_layout"
-            android:theme="@style/Theme.Brew" />
-        <activity
-            android:name=".CoffeeListActivity"
-            android:exported="false"
-            android:label="@string/title_activity_coffee_list"
-            android:theme="@style/Theme.Brew" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

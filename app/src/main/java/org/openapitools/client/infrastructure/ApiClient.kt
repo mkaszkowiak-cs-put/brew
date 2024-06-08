@@ -114,7 +114,7 @@ class ApiClient(
 
         @JvmStatic
         val defaultBasePath: String by lazy {
-            System.getProperties().getProperty(baseUrlKey, "https://resolved-heron-pleasing.ngrok-free.app")
+            System.getProperties().getProperty(baseUrlKey, "https://brew.fly.dev")
         }
     }
 }

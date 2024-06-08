@@ -1,6 +1,5 @@
 package pl.put.brew
 
-import CoffeeDetailsScreen
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -26,8 +25,11 @@ import androidx.navigation.compose.rememberNavController
 import pl.put.brew.ui.theme.BrewTheme
 
 sealed class Screen(val route: String) {
+    data object AuthorizationScreen : Screen("home")
     data object CoffeeListScreen : Screen("coffee-list")
     data object CoffeeDetailsScreen : Screen("coffee-details/{coffeeId}")
+    data object CoffeeRatingScreen : Screen("coffee-rate/{coffeeId}")
+    data object CoffeeRatingSuccessScreen : Screen("coffee-rate-success/{coffeeId}")
 }
 
 class MainActivity : ComponentActivity() {
@@ -39,12 +41,21 @@ class MainActivity : ComponentActivity() {
 
             BrewTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    NavHost(navController, startDestination = Screen.CoffeeListScreen.route) {
+                    NavHost(navController, startDestination = Screen.AuthorizationScreen.route) {
+                        composable(Screen.AuthorizationScreen.route) {
+                            AuthorizationScreen(navController = navController, modifier = Modifier.padding(innerPadding))
+                        }
                         composable(Screen.CoffeeListScreen.route) {
                             CoffeeListScreen(navController = navController, modifier = Modifier.padding(innerPadding))
                         }
                         composable(Screen.CoffeeDetailsScreen.route) {
-                            CoffeeDetailsScreen(modifier = Modifier.padding(innerPadding))
+                            CoffeeDetailsScreen(navController = navController, modifier = Modifier.padding(innerPadding))
+                        }
+                        composable(Screen.CoffeeRatingScreen.route) {
+                            CoffeeRatingScreen(navController = navController, modifier = Modifier.padding(innerPadding))
+                        }
+                        composable(Screen.CoffeeRatingSuccessScreen.route) {
+                            CoffeeRatingSuccessScreen(navController = navController, modifier = Modifier.padding(innerPadding))
                         }
                     }
                 }

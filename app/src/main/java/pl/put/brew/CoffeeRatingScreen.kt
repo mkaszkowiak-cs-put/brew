@@ -12,16 +12,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
 @Composable
-fun CoffeeDetailsScreen(navController: NavHostController, modifier: Modifier = Modifier) {
+fun CoffeeRatingScreen(navController: NavHostController, modifier: Modifier = Modifier) {
     Column(modifier = modifier
         .fillMaxSize()
         .padding(vertical = 16.dp)) {
         Text(
-            text = "Tu masz szczegoly kawki",
+            text = "Tu oceniamy kawke",
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
-        Button(onClick = { navController.navigate("coffee-rate/1") }) {
+        Button(onClick = { navController.navigate("coffee-rate-success/1") }) {
             Text("Ocen kawke")
         }
     }

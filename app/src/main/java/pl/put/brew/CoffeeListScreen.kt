@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
+
 @Composable
 fun CoffeeListScreen(navController: NavHostController, modifier: Modifier = Modifier) {
     Column(modifier = modifier

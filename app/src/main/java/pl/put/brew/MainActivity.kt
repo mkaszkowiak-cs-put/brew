@@ -39,6 +39,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
 
+
             BrewTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavHost(navController, startDestination = Screen.AuthorizationScreen.route) {

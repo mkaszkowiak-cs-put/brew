@@ -46,11 +46,7 @@ data class ReviewCreate (
     val date: java.time.OffsetDateTime,
 
     @Json(name = "coffee_id")
-    val coffeeId: kotlin.Int,
-
-    @Json(name = "image_url")
-    val imageUrl: kotlin.String? = null
-
+    val coffeeId: kotlin.Int
 ) {
 
 

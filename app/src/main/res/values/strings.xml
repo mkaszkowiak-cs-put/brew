@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Brew</string>
+    <string name="title_activity_coffee_list">CoffeeListActivity</string>
+    <string name="title_activity_main_layout">MainLayout</string>
 </resources>

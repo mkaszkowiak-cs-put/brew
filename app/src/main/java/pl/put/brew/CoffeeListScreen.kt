@@ -1,5 +1,7 @@
 package pl.put.brew
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,12 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import org.openapitools.client.models.Coffee
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CoffeeListScreen(
     navController: NavHostController,
     userModel: UserModel,
+    coffeeList: List<Coffee>,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -28,6 +32,13 @@ fun CoffeeListScreen(
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
+        coffeeList.forEach { coffee ->
+            Text(
+                text = "Coffee: ${coffee.name}",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
         Button(onClick = { navController.navigate("coffee-details/1") }) {
             Text("Przejdz do szczegolow")
         }

@@ -13,12 +13,18 @@ import androidx.navigation.NavHostController
 
 
 @Composable
-fun CoffeeListScreen(navController: NavHostController, modifier: Modifier = Modifier) {
-    Column(modifier = modifier
-        .fillMaxSize()
-        .padding(vertical = 16.dp)) {
+fun CoffeeListScreen(
+    navController: NavHostController,
+    userModel: UserModel,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(vertical = 16.dp)
+    ) {
         Text(
-            text = "Lista kawek",
+            text = "Lista kawek. Zalogowałeś sie jako ${userModel.name}",
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )

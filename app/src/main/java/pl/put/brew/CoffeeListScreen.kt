@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -73,9 +72,6 @@ fun CoffeeCard(coffee: Coffee, onItemClick: (Int) -> Unit) {
             .clickable(onClick = { onItemClick(coffee.id) }),
         border = BorderStroke(1.dp, Color.LightGray),
         shape = MaterialTheme.shapes.small,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-        ),
     ) {
         Image(
             rememberImagePainter(coffee.imageUrl),

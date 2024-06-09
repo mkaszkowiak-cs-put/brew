@@ -94,14 +94,23 @@ class MainActivity : ComponentActivity() {
                                     coffee = coffee,
                                 )
                             } else {
-                                Text("Trail with ID $coffeeId not found.")
+                                Text("Coffee with ID $coffeeId not found.")
                             }
                         }
-                        composable(Screen.CoffeeRatingScreen.route) {
-                            CoffeeRatingScreen(
-                                navController = navController,
-                                modifier = Modifier.padding(innerPadding)
-                            )
+                        composable(Screen.CoffeeRatingScreen.route) { backStackEntry ->
+                            val coffeeId = backStackEntry.arguments?.getString("coffeeId")
+                            val coffee = coffeeList.find { it.id == coffeeId?.toInt() }
+
+                            if (coffee != null) {
+                                CoffeeRatingScreen(
+                                    navController = navController,
+                                    modifier = Modifier.padding(innerPadding),
+                                    coffee = coffee
+                                )
+                            } else {
+                                Text("Coffee with ID $coffeeId not found.")
+                            }
+
                         }
                         composable(Screen.CoffeeRatingSuccessScreen.route) {
                             CoffeeRatingSuccessScreen(

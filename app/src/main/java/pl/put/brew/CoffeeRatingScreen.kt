@@ -10,14 +10,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import org.openapitools.client.models.Coffee
 
 @Composable
-fun CoffeeRatingScreen(navController: NavHostController, modifier: Modifier = Modifier) {
-    Column(modifier = modifier
-        .fillMaxSize()
-        .padding(vertical = 16.dp)) {
+fun CoffeeRatingScreen(
+    navController: NavHostController,
+    modifier: Modifier = Modifier,
+    coffee: Coffee
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(vertical = 16.dp)
+    ) {
         Text(
-            text = "Tu oceniamy kawke",
+            text = "Tu oceniamy kawke ${coffee.name}",
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )

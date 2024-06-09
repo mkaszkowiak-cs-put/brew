@@ -19,11 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import org.openapitools.client.models.Coffee
-import java.math.BigDecimal
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -41,12 +41,12 @@ fun CoffeeListScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(vertical = 16.dp, horizontal = 16.dp)
+                .padding(24.dp)
         ) {
             Text(
                 text = "Lista kawek. Zalogowałeś sie jako ${userModel.name}",
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 8.dp),
             )
             CoffeeList(items = coffeeList) { id -> onItemClick(id = id) }
             Spacer(modifier = Modifier.height(16.dp))
@@ -94,6 +94,7 @@ fun CoffeeCard(coffee: Coffee, onItemClick: (Int) -> Unit) {
             Text(
                 text = getRatingString(coffee.rating),
                 style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
@@ -129,15 +130,4 @@ fun CoffeeCard(coffee: Coffee, onItemClick: (Int) -> Unit) {
             )
         }
     }
-}
-
-fun getRatingString(rating: BigDecimal?): String {
-    if (rating == null) {
-        return "Rating not available"
-    }
-
-    val fullStars = rating.toInt()
-    val remainingStars = 5 - fullStars
-
-    return "⭐".repeat(fullStars) + "★".repeat(remainingStars)
 }

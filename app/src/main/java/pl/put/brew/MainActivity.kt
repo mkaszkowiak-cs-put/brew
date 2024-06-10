@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import org.openapitools.client.apis.DefaultApi
 import org.openapitools.client.infrastructure.ApiClient
 import org.openapitools.client.models.Coffee
+import org.openapitools.client.models.Review
 import pl.put.brew.ui.theme.BrewTheme
 
 sealed class Screen(val route: String) {
@@ -46,6 +47,19 @@ class MainActivity : ComponentActivity() {
 
             var coffeeList by remember { mutableStateOf<List<Coffee>>(emptyList()) }
             var errorMessage by remember { mutableStateOf<String?>(null) }
+
+            fun addLocalReviewToCoffee(coffeeId: Int, review: Review) {
+                coffeeList = coffeeList.map { coffee ->
+                    if (coffee.id == coffeeId) {
+                        val updatedReviews = coffee.reviews?.toMutableList()?.apply {
+                            add(0, review)
+                        }
+                        coffee.copy(reviews = updatedReviews)
+                    } else {
+                        coffee
+                    }
+                }
+            }
 
             LaunchedEffect(Unit) {
                 val apiClient = ApiClient()
@@ -105,7 +119,14 @@ class MainActivity : ComponentActivity() {
                                 CoffeeRatingScreen(
                                     navController = navController,
                                     modifier = Modifier.padding(innerPadding),
-                                    coffee = coffee
+                                    coffee = coffee,
+                                    userModel = userModel,
+                                    addLocalReviewToCoffee = { coffeeId, review ->
+                                        addLocalReviewToCoffee(
+                                            coffeeId,
+                                            review
+                                        )
+                                    }
                                 )
                             } else {
                                 Text("Coffee with ID $coffeeId not found.")

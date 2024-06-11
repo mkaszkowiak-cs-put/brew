@@ -110,28 +110,25 @@ fun ZylaCard(coffee: Coffee, context: Context) {
         )
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
-            // Image Layer
             Image(
                 painter = painterResource(id = R.drawable.zyla),
                 contentDescription = "Person",
                 modifier = Modifier
                     .align(Alignment.TopStart)
-                    .padding(top = 16.dp)
+                    .padding(top = 24.dp)
                     .height(200.dp)
                     .width(200.dp)
                     .graphicsLayer {
                         translationX = (-120).toFloat() // Shift image outside the bounds
                     }
             )
-
-            // Content Layer
             Column(
                 modifier = Modifier
                     .padding(
                         top = 40.dp,
                         bottom = 64.dp,
                         start = 100.dp
-                    ), // Adjust the start padding to accommodate the image
+                    ),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {

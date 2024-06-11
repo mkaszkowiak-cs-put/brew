@@ -1,5 +1,7 @@
 package pl.put.brew
 
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
@@ -24,12 +26,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
 import org.openapitools.client.models.Coffee
 
@@ -40,31 +44,6 @@ fun CoffeeRatingSuccessScreen(
     modifier: Modifier = Modifier,
     coffee: Coffee
 ) {
-//    LaunchedEffect(Unit) {
-//        val apiClient = ApiClient()
-//        val api = apiClient.createService(DefaultApi::class.java)
-//        val reviewCreate = ReviewCreate(
-//            rating = BigDecimal(5),
-//            coffeeId = 2,
-//            date = OffsetDateTime.now(),
-//            user = "Owca WK",
-//            review = "To najlepsza kawa jaką piłem przez API w życiu!"
-//        )
-//
-//        val call = api.createReviewReviewPost(reviewCreate)
-//
-//        val apiService = ApiService<Review>()
-//        apiService.makeApiCall(call, object : ApiCallback<Review> {
-//            override fun onSuccess(result: Review) {
-//                println(result)
-//            }
-//
-//            override fun onError(t: Throwable) {
-//                println("Error: ${t.message}")
-//            }
-//        })
-//    }
-
     val textContent = buildAnnotatedString {
         append("Dziękujemy za ")
         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
@@ -95,16 +74,29 @@ fun CoffeeRatingSuccessScreen(
             modifier = Modifier.padding(bottom = 8.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { navController.navigate("coffee-details/${coffee.id}") }) {
+        Button(
+            onClick = { navController.navigate("coffee-details/${coffee.id}") }) {
             Text("Cała kawa po mojej stronie :-)")
         }
         Spacer(modifier = Modifier.weight(1f))
-        ZylaCard()
+        ZylaCard(
+            context = LocalContext.current,
+            coffee = coffee
+        )
     }
 }
 
 @Composable
-fun ZylaCard() {
+fun ZylaCard(coffee: Coffee, context: Context) {
+    val sendIntent = Intent(Intent.ACTION_SEND).apply {
+        putExtra(
+            Intent.EXTRA_TEXT,
+            "Właśnie oceniłem kawę ${coffee.name} w aplikacji Brew! ☕\uD83D\uDE0B Sprawdź moją recenzję i pobierz Brew z Google Play, bo kto nie kocha dobrej kawy? \uD83D\uDE0B"
+        )
+        type = "text/plain"
+    }
+    val shareIntent = Intent.createChooser(sendIntent, null)
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -141,7 +133,9 @@ fun ZylaCard() {
                 Text("Podziel się kawą z innymi!", fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(24.dp))
                 Button(
-                    onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(
+                    onClick = {
+                        startActivity(context, shareIntent, null)
+                    }, colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Black
                     )
                 ) {

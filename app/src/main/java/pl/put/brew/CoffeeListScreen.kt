@@ -5,19 +5,32 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -32,8 +45,19 @@ fun CoffeeListScreen(
     coffeeList: List<Coffee>,
     modifier: Modifier = Modifier
 ) {
+    var filteredCoffeeList by remember { mutableStateOf(coffeeList) }
+
     fun onItemClick(id: Int) {
         navController.navigate("coffee-details/$id")
+    }
+
+    fun onSearch(name: String) {
+        if (name.isBlank()) {
+            filteredCoffeeList = coffeeList
+            return;
+        }
+
+        filteredCoffeeList = coffeeList.filter { it.name.contains(name, ignoreCase = true) }
     }
 
     ScrollableColumn() {
@@ -42,13 +66,15 @@ fun CoffeeListScreen(
                 .fillMaxSize()
                 .padding(24.dp)
         ) {
-            Text(
-                text = "Lista kawek. Zalogowałeś sie jako ${userModel.name}",
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(bottom = 8.dp),
-            )
-            CoffeeList(items = coffeeList) { id -> onItemClick(id = id) }
             Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "Hej ${userModel.name}, czy to pora na kawę?",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            CoffeeSearchBar(onSearch = { onSearch(it) })
+            Spacer(modifier = Modifier.height(32.dp))
+            CoffeeList(items = filteredCoffeeList) { id -> onItemClick(id = id) }
         }
     }
 }
@@ -59,8 +85,8 @@ fun CoffeeList(
     onItemClick: (Int) -> Unit
 ) {
     items.forEach { coffee ->
-        Spacer(modifier = Modifier.height(24.dp))
         CoffeeCard(coffee, onItemClick)
+        Spacer(modifier = Modifier.height(24.dp))
     }
 }
 
@@ -124,6 +150,44 @@ fun CoffeeCard(coffee: Coffee, onItemClick: (Int) -> Unit) {
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.DarkGray
             )
+        }
+    }
+}
+
+@Composable
+@OptIn(
+    ExperimentalMaterial3Api::class
+)
+fun CoffeeSearchBar(onSearch: (String) -> Unit) {
+    var text by rememberSaveable { mutableStateOf("") }
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    Box(
+        Modifier
+            .fillMaxSize()
+    ) {
+        SearchBar(
+            inputField = {
+                SearchBarDefaults.InputField(
+                    query = text,
+                    onQueryChange = {
+                        text = it
+                        onSearch(it)
+                    },
+                    expanded = false,
+                    onExpandedChange = {},
+                    placeholder = { Text("Na jaką kawę masz dzisiaj ochotę?") },
+                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                    onSearch = { it ->
+                        onSearch(it)
+                        keyboardController?.hide()
+                    },
+                )
+            },
+            expanded = false,
+            onExpandedChange = {}
+        ) {
+            Text(text = "XD")
         }
     }
 }

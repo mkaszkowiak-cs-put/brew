@@ -51,7 +51,7 @@ fun CoffeeRatingScreen(
     modifier: Modifier = Modifier,
     coffee: Coffee,
     userModel: UserModel,
-    addLocalReviewToCoffee: (Int, Review) -> Unit
+    addReviewToCoffee: (Int, Review) -> Unit
 ) {
     // TODO: Add empty validation
     val reviewModel = remember { ReviewModel(coffeeId = coffee.id, user = userModel.name) }
@@ -71,21 +71,13 @@ fun CoffeeRatingScreen(
             )
 
             val call = api.createReviewReviewPost(reviewCreate)
-            addLocalReviewToCoffee(
-                reviewModel.coffeeId, Review(
-                    rating = reviewModel.rating.toBigDecimal(),
-                    coffeeId = reviewModel.coffeeId,
-                    date = OffsetDateTime.now(),
-                    user = reviewModel.user,
-                    review = reviewModel.review,
-                    id = (1000..10000000).random()
-                )
-            )
 
             val apiService = ApiService<Review>()
             apiService.makeApiCall(call, object : ApiCallback<Review> {
                 override fun onSuccess(result: Review) {
-                    println(result)
+                    addReviewToCoffee(
+                        reviewModel.coffeeId, result
+                    )
                 }
 
                 override fun onError(t: Throwable) {

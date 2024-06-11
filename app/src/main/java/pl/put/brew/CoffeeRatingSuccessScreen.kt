@@ -75,7 +75,13 @@ fun CoffeeRatingSuccessScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(
-            onClick = { navController.navigate("coffee-details/${coffee.id}") }) {
+            onClick = {
+                navController.navigate("coffee-details/${coffee.id}") {
+                    popUpTo(Screen.CoffeeListScreen.route) {
+                        inclusive = false
+                    }
+                }
+            }) {
             Text("Cała kawa po mojej stronie :-)")
         }
         Spacer(modifier = Modifier.weight(1f))

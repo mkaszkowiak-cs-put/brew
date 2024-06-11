@@ -53,7 +53,6 @@ fun CoffeeRatingScreen(
     userModel: UserModel,
     addReviewToCoffee: (Int, Review) -> Unit
 ) {
-    // TODO: Add empty validation
     val reviewModel = remember { ReviewModel(coffeeId = coffee.id, user = userModel.name) }
     var showError by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()

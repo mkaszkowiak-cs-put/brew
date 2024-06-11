@@ -44,11 +44,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val userModel: UserModel = viewModel()
-
+            
             var coffeeList by remember { mutableStateOf<List<Coffee>>(emptyList()) }
             var errorMessage by remember { mutableStateOf<String?>(null) }
 
-            fun addLocalReviewToCoffee(coffeeId: Int, review: Review) {
+            fun addReviewToCoffee(coffeeId: Int, review: Review) {
                 coffeeList = coffeeList.map { coffee ->
                     if (coffee.id == coffeeId) {
                         val updatedReviews = coffee.reviews?.toMutableList()?.apply {
@@ -121,8 +121,8 @@ class MainActivity : ComponentActivity() {
                                     modifier = Modifier.padding(innerPadding),
                                     coffee = coffee,
                                     userModel = userModel,
-                                    addLocalReviewToCoffee = { coffeeId, review ->
-                                        addLocalReviewToCoffee(
+                                    addReviewToCoffee = { coffeeId, review ->
+                                        addReviewToCoffee(
                                             coffeeId,
                                             review
                                         )

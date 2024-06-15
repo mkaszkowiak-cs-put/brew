@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,9 +44,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val userModel: UserModel = viewModel()
-            
-            var coffeeList by remember { mutableStateOf<List<Coffee>>(emptyList()) }
-            var errorMessage by remember { mutableStateOf<String?>(null) }
+
+            var coffeeList by rememberSaveable { mutableStateOf<List<Coffee>>(emptyList()) }
+            var errorMessage by rememberSaveable { mutableStateOf<String?>(null) }
 
             fun addReviewToCoffee(coffeeId: Int, review: Review) {
                 coffeeList = coffeeList.map { coffee ->

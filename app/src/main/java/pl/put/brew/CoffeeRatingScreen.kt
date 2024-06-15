@@ -89,82 +89,85 @@ fun CoffeeRatingScreen(
         navController.navigate("coffee-rate-success/${coffee.id}")
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(vertical = 16.dp, horizontal = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = coffee.name,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-        TextField(
-            value = reviewModel.review,
-            onValueChange = {
-                reviewModel.review = it
-            },
-            label = { Text("Treść opinii") },
-            minLines = 3,
-            modifier = Modifier
-                .fillMaxWidth(),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    if (reviewModel.review.isBlank()) {
-                        showError = true
-                    } else {
-                        navController.navigate("coffee-list")
-                    }
-                }
-            ),
-            isError = showError,
-        )
-        if (showError) {
-            Text(
-                text = "Daj znać co sądzisz o tej kawie!",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-        }
-        Spacer(modifier = Modifier.height(32.dp))
-        Text("Poziom kawowej euforii")
-        Slider(
-            value = reviewModel.rating,
-            onValueChange = { reviewModel.rating = it },
-            steps = 3,
-            valueRange = 1f..5f,
-        )
-        Spacer(modifier = Modifier.height(50.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(),
-            contentAlignment = Alignment.Center
+    ScrollableColumn {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(vertical = 16.dp, horizontal = 32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Pisząc recenzję, możesz wspomóc się pytaniami:\n" +
-                        "\n" +
-                        "  • jak zaparzyłæś kawę? (metoda, stopień zmielenia, temperatura wody)\n" +
-                        "  • kiedy otworzyłæś paczkę? \n" +
-                        "  • jakie odczuwasz aromaty?",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.DarkGray,
+                text = coffee.name,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
             )
-        }
-        Spacer(modifier = Modifier.height(24.dp))
-        Button(onClick = {
-            if (reviewModel.review.isBlank()) {
-                showError = true
-            } else {
-                addReview()
+            Spacer(modifier = Modifier.height(32.dp))
+            TextField(
+                value = reviewModel.review,
+                onValueChange = {
+                    reviewModel.review = it
+                },
+                label = { Text("Treść opinii") },
+                minLines = 3,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        if (reviewModel.review.isBlank()) {
+                            showError = true
+                        } else {
+                            navController.navigate("coffee-list")
+                        }
+                    }
+                ),
+                isError = showError,
+            )
+            if (showError) {
+                Text(
+                    text = "Daj znać co sądzisz o tej kawie!",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
             }
-        }) {
-            Text("Ocen kawke")
+            Spacer(modifier = Modifier.height(32.dp))
+            Text("Poziom kawowej euforii")
+            Slider(
+                value = reviewModel.rating,
+                onValueChange = { reviewModel.rating = it },
+                steps = 3,
+                valueRange = 1f..5f,
+            )
+            Spacer(modifier = Modifier.height(50.dp))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Pisząc recenzję, możesz wspomóc się pytaniami:\n" +
+                            "\n" +
+                            "  • jak zaparzyłæś kawę? (metoda, stopień zmielenia, temperatura wody)\n" +
+                            "  • kiedy otworzyłæś paczkę? \n" +
+                            "  • jakie odczuwasz aromaty?",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.DarkGray,
+                )
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+            Button(onClick = {
+                if (reviewModel.review.isBlank()) {
+                    showError = true
+                } else {
+                    addReview()
+                }
+            }) {
+                Text("Ocen kawke")
+            }
         }
     }
+    
 }
